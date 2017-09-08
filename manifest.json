@@ -22,8 +22,13 @@
           "src": "img/icons/icon-256x256.png",
           "sizes": "256x256",
           "type": "image/png"
+        }, {
+          "src": "img/icons/icon-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
         }],
     "start_url": "index.html",
     "display": "standalone",
-    "background)color": "#607d8b"
+    "background_color": "#607d8b",
+    "theme_color": "#607d8b"
 }
