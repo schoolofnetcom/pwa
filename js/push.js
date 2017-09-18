@@ -1,29 +1,40 @@
 console.log('[Application] start push listening');
 
-const messaging = firebase.messaging();
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./firebase-messaging-sw.js')
+        .then(registration => {
 
-messaging.requestPermission().then(function () {
-    console.log('Permission granted');
+            const messaging = firebase.messaging();
 
-    return messaging.getToken().then(function (currentToken) {
-        if (currentToken) {
-            console.log(currentToken);
-            return currentToken;
-        } else {
-            console.warn('Nenhum id disponível, Solicite permissão apra gerar um');
-        }
-    });
-});
+            messaging.useServiceWorker(registration)
 
-messaging.getToken()
-    .then(function(currentToken) {
-        if (currentToken) {
-            console.log(currentToken);
-            return currentToken;
-        } else {
-            console.warn('Nenhum id disponível, Solicite permissão apra gerar um');
-        }
-    })
-    .catch(function(err) {
-        console.warn('get token err', err);
-    });
+            
+            messaging.requestPermission().then(function () {
+                console.log('Permission granted');
+
+                return messaging.getToken().then(function (currentToken) {
+                    if (currentToken) {
+                        console.log(currentToken);
+                        return currentToken;
+                    } else {
+                        console.warn('Nenhum id disponível, Solicite permissão apra gerar um');
+                    }
+                });
+            });
+
+            messaging.getToken()
+                .then(function(currentToken) {
+                    if (currentToken) {
+                        console.log(currentToken);
+                        return currentToken;
+                    } else {
+                        console.warn('Nenhum id disponível, Solicite permissão apra gerar um');
+                    }
+                })
+                .catch(function(err) {
+                    console.warn('get token err', err);
+                });
+
+        })
+        .catch(err => console.log('Service Worker Error', err))
+}
